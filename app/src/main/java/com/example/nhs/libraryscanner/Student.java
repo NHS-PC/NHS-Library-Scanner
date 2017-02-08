@@ -34,9 +34,12 @@ public class Student {
     }
 
     // This method will fill a Student object with data from the QR code
+    // Assume that there will be an argument...probably will be String of decoded QR
     public void getDataFromQR()
     {
-
+        // Code to write
+        // Take first line of QR arg and set that to firstName and lastName (separted by spaces on first line)
+        // Take second line, set to studentID
     }
 
     public String getFirstName() {
@@ -53,8 +56,13 @@ public class Student {
 
     public boolean isCheckedIn() {
         boolean status = false;
-
-        
+        // Code because fuck how dumb it is to find and import API for Google Spreadsheets
+        // Retrieve contents of spreadsheet.
+        // Search retrieved data for row that contains Student.studentID
+        // If user exists, get data for that row and column for CHECKED IN/OUT
+            // If CHCECKED OUT, set status to false and return.
+            // If CHECKED IN, set status to true and return.
+        // If user does not exist, assume CHECKED OUT, set status to false and return
 
         // Don't forget to set local object's checkedIn variable
         this.checkedIn = status;
