@@ -5,16 +5,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import com.example.nhs.libraryscanner.DataReader;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        List<Student> returnedList = DataReader.readCSV("~/Desktop/WILL_DONT_DELETE/test.csv");
+        for (Student s: returnedList)
+        {
+            System.out.println(s);
+        }
+
     }
 
-    public void openCamera(View view) {
+    /*public void openCamera(View view) {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();
     }
@@ -26,5 +35,5 @@ public class MainActivity extends AppCompatActivity {
             TextView output = (TextView)findViewById(R.id.qrTextView);
             output.setText(scanResult.getContents());
         }
-    }
+    }*/
 }

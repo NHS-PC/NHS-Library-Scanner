@@ -3,43 +3,77 @@ package com.example.nhs.libraryscanner;
 /**
  * Created by robotics on 2/8/17.
  */
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import com.example.nhs.libraryscanner.Student;
+
 public class DataReader {
 
+    //Delimiter used in CSV file
+    private static final String COMMA_DELIMITER = ",";
 
-    private String downloadUrl() throws IOException {
-        InputStream is = null;
+    //Student attributes index
+    private static final int STUDENT_ID = 2;
+    private static final int STUDENT_FNAME = 0;
+    private static final int STUDENT_LNAME = 1;
+    private static final int STUDENT_STATUS = 3;
+
+    public static List readCSV(String fileName) {
+        BufferedReader fileReader = null;
+        //Create a new list of student to be filled by CSV file data
+        List students = new ArrayList();
         try {
-            URL spreadSheetURL = new URL("https://docs.google.com/spreadsheets/d/1IC_vR41TsWR7b4Umjf9XfHgTGcXk4KElta64dvRYI30/pubhtml");
-            HttpURLConnection httpConnection = (HttpURLConnection) spreadSheetURL.openConnection();
-            httpConnection.setReadTimeout(10000);
-            httpConnection.setConnectTimeout(15000);
-            httpConnection.setRequestMethod("GET");
-            httpConnection.setDoInput(true);
-            httpConnection.connect();
-            is = httpConnection.getInputStream();
-            System.out.println("DEBUG: output " + getText(is));
-            return getText(is);
-        } finally {
-            if (is != null) is.close();
-        }
-    }
+            String line = "";
 
-    /**
-     * Continued process to obtain makefile
-     * @param stream Object for the input stream which we will get text from
-     * @return String with the text we want from the makefile
-     * @throws IOException
-     */
-    public String getText(InputStream stream) throws IOException {
-        Reader reader = new InputStreamReader(stream, "UTF-8");
-        char[] buffer = new char[100]; // Should be enough to get first few lines of Makefile
-        reader.read(buffer);
-        return new String(buffer);
+            //Create the file reader
+            fileReader = new BufferedReader(new FileReader(fileName));
+
+            //Read the CSV file header to skip it
+            fileReader.readLine();
+
+            //Read the file line by line starting from the second line
+            while ((line = fileReader.readLine()) != null) {
+                //Get all tokens available in line
+                String[] tokens = line.split(COMMA_DELIMITER);
+                if (tokens.length > 0) {
+                    //Create a new student objecSTUDt and fill data
+                    boolean statusConverted;
+                    int status = Integer.parseInt(tokens[STUDENT_STATUS]);
+                    if (status == 0) {
+                        statusConverted = false; // Checked OUT
+                    } else {
+                        statusConverted = true; // Checked IN
+                    }
+                    Student student = new Student(tokens[STUDENT_FNAME], tokens[STUDENT_LNAME], tokens[STUDENT_ID], statusConverted);
+                    students.add(student);
+                }
+            }
+
+            /*//Print the new student list
+            for (Student student : students) {
+                System.out.println(student.toString());
+
+            }*/
+        } catch (Exception e) {
+
+            System.out.println("Error in CsvFileReader !!!");
+
+            e.printStackTrace();
+
+        } finally {
+            try {
+                fileReader.close();
+            } catch (IOException e) {
+                System.out.println("Error while closing fileReader !!!");
+                e.printStackTrace();
+            }
+
+        }
+        return students;
     }
 }
+
