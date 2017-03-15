@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.example.nhs.libraryscanner.Student;
 
 public class DataReader {
 
@@ -25,7 +24,7 @@ public class DataReader {
     public static List readCSV(String fileName) {
         BufferedReader fileReader = null;
         //Create a new list of student to be filled by CSV file data
-        List students = new ArrayList();
+        ArrayList<Student> students = new ArrayList<Student>();
         try {
             String line = "";
 
@@ -40,7 +39,7 @@ public class DataReader {
                 //Get all tokens available in line
                 String[] tokens = line.split(COMMA_DELIMITER);
                 if (tokens.length > 0) {
-                    //Create a new student objecSTUDt and fill data
+                    //Create a new student object and fill data
                     boolean statusConverted;
                     int status = Integer.parseInt(tokens[STUDENT_STATUS]);
                     if (status == 0) {
@@ -53,11 +52,11 @@ public class DataReader {
                 }
             }
 
-            /*//Print the new student list
+            //Print the new student list
             for (Student student : students) {
                 System.out.println(student.toString());
 
-            }*/
+            }
         } catch (Exception e) {
 
             System.out.println("Error in CsvFileReader !!!");
