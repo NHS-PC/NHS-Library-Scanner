@@ -1,8 +1,3 @@
-package com.example.nhs.libraryscanner;
-
-/**
- * Created by robotics on 1/25/17.
- */
 public class Student {
 
     private String firstName;
@@ -43,5 +38,9 @@ public class Student {
         return this.checkedIn;
     }
 
+   public String toString() {
+	return "Name: " + this.getFirstName() + " " + this.getLastName() + "\nID: " + this.getStudentID() + 
+			"\nChecked IN/OUT Status: " + this.isCheckedIn();
+   }
 
 }
